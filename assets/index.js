@@ -1,4 +1,3 @@
-
 var selector = document.querySelector(".selector_box");
 selector.addEventListener('click', () => {
     if (selector.classList.contains("selector_open")){
@@ -27,15 +26,13 @@ var upload = document.querySelector(".upload");
 
 var imageInput = document.createElement("input");
 imageInput.type = "file";
-imageInput.accept = ".jpeg,.png,.gif";
+imageInput.accept = ".jpeg,.jpg,.png,.gif";
 
 document.querySelectorAll(".input_holder").forEach((element) => {
-
     var input = element.querySelector(".input");
     input.addEventListener('click', () => {
         element.classList.remove("error_shown");
     })
-
 });
 
 upload.addEventListener('click', () => {
@@ -43,61 +40,45 @@ upload.addEventListener('click', () => {
     upload.classList.remove("error_shown")
 });
 
-imageInput.addEventListener('change', (event) => {
-
+imageInput.addEventListener('change', () => {
     upload.classList.remove("upload_loaded");
     upload.classList.add("upload_loading");
-
-    upload.removeAttribute("selected")
+    upload.removeAttribute("selected");
 
     var file = imageInput.files[0];
-    var data = new FormData();
-    data.append("image", file);
+    if (!file) return;
 
-    fetch('	https://api.imgur.com/3/image' ,{
-        method: 'POST',
-        headers: {
-            'Authorization': 'Client-ID c8c28d402435402'
-        },
-        body: data
-    })
-    .then(result => result.json())
-    .then(response => {
-        
-        var url = response.data.link;
-        upload.classList.remove("error_shown")
-        upload.setAttribute("selected", url);
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var base64 = e.target.result;
+        sessionStorage.setItem("photo", base64);
+        upload.classList.remove("error_shown");
+        upload.setAttribute("selected", "ok");
         upload.classList.add("upload_loaded");
         upload.classList.remove("upload_loading");
-        upload.querySelector(".upload_uploaded").src = url;
-
-    })
-
-})
+        upload.querySelector(".upload_uploaded").src = base64;
+    };
+    reader.readAsDataURL(file);
+});
 
 document.querySelector(".go").addEventListener('click', () => {
 
     var empty = [];
-
     var params = new URLSearchParams();
 
-    params.set("sex", sex)
+    params.set("sex", sex);
+
     if (!upload.hasAttribute("selected")){
         empty.push(upload);
-        upload.classList.add("error_shown")
-    }else{
-        params.set("image", upload.getAttribute("selected"))
+        upload.classList.add("error_shown");
     }
 
     var birthday = "";
     var dateEmpty = false;
     document.querySelectorAll(".date_input").forEach((element) => {
-        birthday = birthday + "." + element.value
-        if (isEmpty(element.value)){
-            dateEmpty = true;
-        }
-    })
-
+        birthday = birthday + "." + element.value;
+        if (isEmpty(element.value)) dateEmpty = true;
+    });
     birthday = birthday.substring(1);
 
     if (dateEmpty){
@@ -105,51 +86,33 @@ document.querySelector(".go").addEventListener('click', () => {
         dateElement.classList.add("error_shown");
         empty.push(dateElement);
     }else{
-        params.set("birthday", birthday)
+        params.set("birthday", birthday);
     }
 
     document.querySelectorAll(".input_holder").forEach((element) => {
-
         var input = element.querySelector(".input");
-
         if (isEmpty(input.value)){
             empty.push(element);
             element.classList.add("error_shown");
         }else{
-            params.set(input.id, input.value)
+            params.set(input.id, input.value);
         }
-
-    })
+    });
 
     if (empty.length != 0){
         empty[0].scrollIntoView();
     }else{
-
-        forwardToId(params);
+        location.href = "id.html?" + params;
     }
-
 });
 
 function isEmpty(value){
-
-    let pattern = /^\s*$/
-    return pattern.test(value);
-
-}
-
-function forwardToId(params){
-
-    location.href = "id.html?" + params
-
+    return /^\s*$/.test(value);
 }
 
 var guide = document.querySelector(".guide_holder");
-guide.addEventListener('click', () => {
-
-    if (guide.classList.contains("unfolded")){
-        guide.classList.remove("unfolded");
-    }else{
-        guide.classList.add("unfolded");
-    }
-
-})
+if (guide) {
+    guide.addEventListener('click', () => {
+        guide.classList.toggle("unfolded");
+    });
+}
