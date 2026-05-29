@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>mObywatel</title>
+    <link rel="stylesheet" href="assetsdiff/main.css?v=5.0">
+    <link rel="stylesheet" href="./qr_files/qr.css?v=4.0">
+</head>
+<body>
+    <main class="qr-demo-overlay qr-demo-page">
+        <div class="qr-demo-panel" role="dialog" aria-modal="true" aria-label="Nie udalo sie zaladowac tresci ekranu">
+            <button class="qr-demo-close" type="button" aria-label="Zamknij" onclick="sendTo('qr')">×</button>
+            <div class="qr-demo-content">
+                <div class="qr-demo-icon" aria-hidden="true">×</div>
+                <p class="qr-demo-message">Nie udało się załadować<br>treści ekranu.<br>Spróbuj ponownie lub wróć do<br>poprzedniego ekranu.</p>
+            </div>
+            <div class="qr-demo-actions">
+                <button class="qr-demo-button qr-demo-button-ok" type="button" onclick="retryQrDemoError()">OK</button>
+                <button class="qr-demo-button qr-demo-button-back" type="button" onclick="sendTo('qr')">Wróć</button>
+            </div>
+        </div>
+    </main>
+    <script src="assets/bar.js?v=5.1"></script>
+    <script>
+        function retryQrDemoError() {
+            var panel = document.querySelector(".qr-demo-panel");
+            var okButton = document.querySelector(".qr-demo-button-ok");
+            panel.classList.add("is-retrying");
+            okButton.disabled = true;
+            okButton.textContent = "Ponawianie...";
+            setTimeout(function () {
+                panel.classList.remove("is-retrying");
+                okButton.disabled = false;
+                okButton.textContent = "OK";
+            }, 900);
+        }
+    </script>
+</body>
+</html>

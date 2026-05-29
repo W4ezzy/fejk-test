@@ -1,0 +1,58 @@
+var params = new URLSearchParams(window.location.search);
+
+window.onload = async () => {
+    let filesResponse;
+    try {
+        const filesRequest = await fetch('/cache/files', { cache: 'no-store' });
+        if (!filesRequest.ok || !filesRequest.headers.get('content-type')?.includes('application/json')) {
+            return;
+        }
+        filesResponse = await filesRequest.json();
+    } catch (error) {
+        return;
+    }
+    
+    const files = ['https://unpkg.com/html5-qrcode'];
+    const pages = ['card', 'document', 'documents', 'documents-add', 'documents-customize', 'home', 'id', 'more', 'pesel', 'qr', 'scan', 'services', 'service-demo', 'shortcuts', 'show'];
+
+    pages.forEach((page) => {
+        files.push('/' + page + '?' + params);
+    })
+
+    filesResponse.files.forEach((file) => {
+        files.push('/' + file);
+    })
+
+    const cacheName = 'fobywatel';
+
+    const cache = await caches.open(cacheName);
+    await cache.addAll(files)
+
+    const cachedRequests = await cache.keys();
+    
+    cachedRequests.forEach((request) => {
+        checkElement(request, cache);
+    })
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/worker.js');
+    }
+}
+
+async function checkElement(request, cache) {
+    const cachedResponse = await cache.match(request);
+
+    const url = new URL(request.url);
+    const modifiedUrl = new URL(url);
+
+    modifiedUrl.searchParams.append('date', new Date());
+
+    const networkResponse = await fetch(modifiedUrl);
+
+    const cachedText = await cachedResponse.clone().text();
+    const networkText = await networkResponse.clone().text();
+
+    if (cachedText !== networkText){
+        cache.put(url, networkResponse);
+    }
+}

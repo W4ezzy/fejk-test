@@ -1,0 +1,484 @@
+html,
+body{
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    background: #111218;
+    color: #fff;
+    overflow: hidden;
+    touch-action: manipulation;
+    overscroll-behavior: none;
+}
+
+body{
+    font-family: "Roboto", sans-serif;
+    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+}
+
+*{
+    box-sizing: border-box;
+}
+
+.splash_screen{
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    background: #111218;
+    animation: splash_out 420ms ease 1100ms forwards;
+}
+
+.splash_logo{
+    width: clamp(92px, 24vw, 138px);
+    height: clamp(92px, 24vw, 138px);
+    object-fit: contain;
+    filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.35));
+    animation: splash_pop 900ms cubic-bezier(.18, .9, .25, 1) both;
+}
+
+.login_shell{
+    width: min(100%, 430px);
+    min-height: 100vh;
+    min-height: 100svh;
+    margin: 0 auto;
+    padding: 10px 20px calc(18px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at 50% -12%, rgba(74, 162, 252, 0.16), transparent 32%),
+        #111218;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: login_in 420ms ease 820ms forwards;
+}
+
+.login_brand{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+    margin-top: 0;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.app_mark{
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    object-fit: contain;
+}
+
+.login_intro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: clamp(24px, 7svh, 56px);
+    text-align: center;
+}
+
+.key_circle{
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(74, 162, 252, 0.12);
+    border: 1px solid rgba(108, 184, 255, 0.16);
+    box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.015);
+}
+
+.key_circle svg{
+    width: 58px;
+    height: 58px;
+    fill: none;
+    stroke: #6ebcff;
+    stroke-width: 4.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.login_intro h1{
+    margin: 24px 0 15px;
+    color: #fff;
+    font-size: clamp(25px, 7vw, 31px);
+    line-height: 1.16;
+    font-weight: 800;
+    letter-spacing: 0;
+}
+
+.biometric_login{
+    height: 38px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 20px;
+    background: rgba(74, 162, 252, 0.12);
+    color: #8ecaff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.password_box{
+    width: 100%;
+    margin-top: clamp(34px, 8svh, 60px);
+    background: #1f2326;
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    border-radius: 18px;
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.26);
+}
+
+.password_grid{
+    width: 100%;
+    padding: 20px 18px 18px;
+}
+
+.password_text{
+    display: block;
+    margin: 0 0 6px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.input_holder{
+    position: relative;
+}
+
+.password_input{
+    width: 100%;
+    height: 62px;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    border-radius: 7px;
+    outline: none;
+    background: rgba(17, 18, 24, 0.76);
+    color: #fff;
+    padding: 0 58px 0 16px;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.password_input::placeholder{
+    color: rgba(255, 255, 255, 0.32);
+}
+
+.password_input:focus{
+    border-color: #4aa2fc;
+    box-shadow: 0 0 0 3px rgba(74, 162, 252, 0.18);
+    caret-color: #4aa2fc;
+}
+
+.eye{
+    position: absolute;
+    top: 0;
+    right: 12px;
+    bottom: 0;
+    width: 38px;
+    height: 38px;
+    margin: auto 0;
+    border: 0;
+    background: transparent;
+}
+
+.eye::before,
+.eye::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+}
+
+.eye::before{
+    width: 25px;
+    height: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.62);
+    border-radius: 50%;
+}
+
+.eye::after{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.62);
+}
+
+.eye.eye_close{
+    transform: rotate(-16deg);
+}
+
+.eye.eye_close::after{
+    width: 27px;
+    height: 2px;
+    border-radius: 2px;
+}
+
+.input_spinner{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.14);
+    border-left-color: #e93452;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.72);
+}
+
+.is-checking .input_spinner{
+    opacity: 1;
+    animation: spin 760ms linear infinite;
+}
+
+.forgot_password{
+    display: block;
+    margin: 18px 0 0 auto;
+    border: 0;
+    background: transparent;
+    color: #8ecaff;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.pin_status{
+    min-height: 20px;
+    margin: 12px 0 0;
+    color: #ff8585;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.login{
+    width: 100%;
+    height: 56px;
+    margin: auto 0 14px;
+    border: 0;
+    border-radius: 28px;
+    background: #4aa2fc;
+    color: #071827;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.login:disabled,
+.biometric_login:disabled{
+    opacity: 0.62;
+}
+
+.version{
+    margin: 0;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.biometric_sheet{
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(0, 0, 0, 0.62);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.biometric_sheet.is-open{
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.biometric_card{
+    width: min(100%, 390px);
+    border-radius: 28px;
+    background: #1f2326;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+    padding: 24px 22px 18px;
+    text-align: center;
+    transform: translateY(22px);
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.biometric_sheet.is-open .biometric_card{
+    transform: translateY(0);
+}
+
+.biometric_app_icon{
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+}
+
+.biometric_app_name{
+    margin: 8px 0 18px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.biometric_symbol{
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 16px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(74, 162, 252, 0.12);
+    color: #7fc3ff;
+}
+
+.biometric_symbol::before{
+    content: "";
+    width: 48px;
+    height: 48px;
+    background: currentColor;
+    mask: var(--biometric-mask);
+    -webkit-mask: var(--biometric-mask);
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+}
+
+.biometric_sheet[data-mode="face"]{
+    --biometric-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10h-6a4 4 0 0 0-4 4v6M44 10h6a4 4 0 0 1 4 4v6M20 54h-6a4 4 0 0 1-4-4v-6M44 54h6a4 4 0 0 0 4-4v-6M24 25v8M40 25v8M25 43c4.8 3.4 9.2 3.4 14 0'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.biometric_sheet[data-mode="fingerprint"]{
+    --biometric-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='black' stroke-width='4' stroke-linecap='round'%3E%3Cpath d='M19 25c3-6 8-9 14-9 8 0 15 6 15 15 0 15-8 18-8 25M15 37c0-11 7-19 18-19 6 0 12 3 15 8M22 53c3-5 4-10 4-17 0-4 3-7 7-7s7 3 7 7c0 9-2 15-6 21M16 47c2-4 3-8 3-13 0-8 6-15 14-15M31 57c2-5 3-10 3-18M25 35c1-4 4-6 8-6'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.biometric_title{
+    margin: 0;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.biometric_hint{
+    margin: 8px auto 18px;
+    max-width: 290px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.biometric_progress{
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.14);
+    border-left-color: #4aa2fc;
+    animation: spin 760ms linear infinite;
+}
+
+.biometric_card.is-done .biometric_progress{
+    border-color: rgba(107, 226, 141, 0.22);
+    border-left-color: #6be28d;
+}
+
+.biometric_cancel{
+    width: 100%;
+    height: 48px;
+    border: 1px solid rgba(142, 202, 255, 0.58);
+    border-radius: 24px;
+    background: transparent;
+    color: #8ecaff;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+@media (min-width: 700px){
+    body{
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        background: #000;
+    }
+
+    .login_shell{
+        width: 430px;
+        min-height: min(760px, 100svh);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+}
+
+@media (max-height: 700px){
+    .login_intro{
+        margin-top: 16px;
+    }
+
+    .key_circle{
+        width: 78px;
+        height: 78px;
+    }
+
+    .key_circle svg{
+        width: 48px;
+        height: 48px;
+    }
+
+    .password_box{
+        margin-top: 24px;
+    }
+}
+
+@keyframes splash_pop{
+    0%{
+        opacity: 0;
+        transform: scale(0.76);
+    }
+    55%{
+        opacity: 1;
+        transform: scale(1.04);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes splash_out{
+    to{
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+@keyframes login_in{
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin{
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    *,
+    *::before,
+    *::after{
+        animation-duration: 1ms !important;
+        transition-duration: 1ms !important;
+    }
+}
